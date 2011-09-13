@@ -1,14 +1,15 @@
 var vows = require("vows");
 var assert = require("assert");
+var spot = require("../lib/spot.js");
 
-var spot = require("../lib/spot.js")
+require("./server.js");
 
-var suite = vows.describe('Spot')
+var suite = vows.describe('Spot');
 
 suite.addBatch({
     'Get www.google.com': {
         topic: function() {
-			spot.get("http://www.google.co.uk").send(this.callback)
+			spot.get("http://www.google.co.uk").send(this.callback);
         },
         "returns 200": function(error, data) {
 			assert.equal(data.status, "200");

@@ -3,5 +3,5 @@
     "description"   : "Rest Client",
     "author"        : "Jozef Dransfield <Jozef.Dransfield@me.com>",
     "version"       : "0.0.1",
-    "dependencies"  : {"underscore": "", "vows": ""}
+    "dependencies"  : {"underscore": "", "vows": "", "express", ""}
 }
