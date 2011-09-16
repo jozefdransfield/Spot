@@ -1,7 +1,7 @@
 {
     "name"          : "Spot",
-    "description"   : "Rest Client",
+    "description"   : "Http Rest Client",
     "author"        : "Jozef Dransfield <Jozef.Dransfield@me.com>",
     "version"       : "0.0.1",
-    "dependencies"  : {"underscore": "", "vows": "", "express", ""}
+    "dependencies"  : {"underscore": "", "vows": "", "express": ""}
 }
