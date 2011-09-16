@@ -1,7 +1,9 @@
 {
-    "name"          : "Spot",
+    "name"          : "spot",
     "description"   : "Http Rest Client",
     "author"        : "Jozef Dransfield <Jozef.Dransfield@me.com>",
     "version"       : "0.0.1",
     "dependencies"  : {"underscore": "", "vows": "", "express": ""}
+	"directories" 	: { "lib" : "./lib" },
+    "main" 			: "./lib/spot"
 }
