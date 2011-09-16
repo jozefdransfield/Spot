@@ -1,6 +1,7 @@
 var vows = require("vows");
 var assert = require("assert");
 var spot = require("../lib/spot.js");
+var path = require("path");
 
 require("./server.js");
 
@@ -9,31 +10,31 @@ var suite = vows.describe('Spot');
 suite.addBatch({
     'Getting a url that returns JSON': {
         topic: function() {
-			spot.get(resource("/respondJson")).send(this.callback);
+			spot.get(resource("/echo")).send(this.callback);
         },
         "returns successfully": successfulResponse
     },
     'Posting a url that returns JSON': {
         topic: function() {
-            spot.post(resource("/respondJson")).send(this.callback);
+            spot.post(resource("/echo")).send(this.callback);
         },
         "returns successfully": successfulResponse
     },
     'Deleting a url that returns JSON': {
         topic: function() {
-            spot.delete(resource("/respondJson")).send(this.callback);
+            spot.delete(resource("/echo")).send(this.callback);
         },
         "returns successfully": successfulResponse
     },
     'Putting a url that returns JSON': {
         topic: function() {
-            spot.put(resource("/respondJson")).send(this.callback);
+            spot.put(resource("/echo")).send(this.callback);
         },
         "returns successfully": successfulResponse
     },
     'Getting a url with headers that returns JSON ': {
         topic: function() {
-            spot.get(resource("/respondJson")).header("jack", "jill").header("bill", "ben").send(this.callback);
+            spot.get(resource("/echo")).header("jack", "jill").header("bill", "ben").send(this.callback);
         },
         "returns successfully": successfulResponse,
         "has headers": function(error, response) {
@@ -43,7 +44,7 @@ suite.addBatch({
     },
     'Putting a url with headers that returns JSON ': {
         topic: function() {
-            spot.put(resource("/respondJson")).header("jack", "jill").header("bill", "ben").send(this.callback);
+            spot.put(resource("/echo")).header("jack", "jill").header("bill", "ben").send(this.callback);
         },
         "returns successfully": successfulResponse,
         "has headers": function(error, response) {
@@ -53,7 +54,7 @@ suite.addBatch({
     },
     'Deleting a url with headers that returns JSON ': {
         topic: function() {
-            spot.delete(resource("/respondJson")).header("jack", "jill").header("bill", "ben").send(this.callback);
+            spot.delete(resource("/echo")).header("jack", "jill").header("bill", "ben").send(this.callback);
         },
         "returns successfully": successfulResponse,
         "has headers": function(error, response) {
@@ -63,7 +64,10 @@ suite.addBatch({
     },
     'Posting a url with headers that returns JSON ': {
         topic: function() {
-            spot.post(resource("/respondJson")).header("jack", "jill").header("bill", "ben").send(this.callback);
+            spot.post(resource("/echo")).
+                header("jack", "jill").
+                header("bill", "ben").
+                send(this.callback);
         },
         "returns successfully": successfulResponse,
         "has headers": function(error, response) {
@@ -73,17 +77,30 @@ suite.addBatch({
     }
 });
 
-// Havnt got tests for sending content
+suite.addBatch({
+   "Post with json body": {
+        topic: function() {
+            spot.post(resource("/echo")).
+                body({json: "awesome"}).
+                send(this.callback);
+        },
+        "returns successfully": successfulResponse,
+        "has body": function(error, response) {
+            assert.deepEqual(response.data.body, {json: "awesome"});   
+        }        
+    }
+});
+
 
 suite.addBatch({
     'Post with file': {
         topic: function() {
-            spot.post("http://cgi-lib.berkeley.edu/ex/fup.cgi").file("./server.js").send(this.callback);
+            spot.post(resource("/fileupload")).file(path.join(__dirname, "uploadfile.txt")).send(this.callback);
         },
-        "returns successfully": successfulResponse,
-        "meh": function(err, response) {
-               console.log(response);
-        }
+        "has file with correct name": function(err, response) {
+               assert.equal(response.data.files[0], "uploadfile.txt")
+        },
+        "returns successfully": successfulResponse
     }
 });
 
